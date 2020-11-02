@@ -1,7 +1,8 @@
 <template>
   <div class="Config">
     <el-button size="mini" type="primary" icon="el-icon-plus" @click="addRule">新增规则</el-button>
-
+    <el-button size="mini" @click="importRule">导入规则</el-button>
+    <el-button size="mini" @click="exportRule">导出规则</el-button>
     <el-table
         row-key="id"
         ref="table"
@@ -33,7 +34,7 @@
       </el-table-column>
     </el-table>
 
-    <el-input v-model="rulesJson" @change="changeRulesJson"></el-input>
+<!--    <el-input v-model="rulesJson" @change="changeRulesJson"></el-input>-->
   </div>
 </template>
 
@@ -47,8 +48,7 @@ export default {
         {id: 1, rule: "jpg|png|jpeg|gif", path: "图片"},
         {id: 2, rule: "txt|doc|cmd", path: "文档"},
         {id: 3, rule: "*", path: "其他"}
-      ],
-      rulesJson: ""
+      ]
     }
   },
   watch:{
@@ -56,7 +56,6 @@ export default {
       handler(newName, oldName) {
         //保存
         window.utils.db("rules",this.rules);
-        this.rulesJson = JSON.stringify(this.rules);
       },
       deep: true
     }
@@ -89,12 +88,32 @@ export default {
     delRule(index){
       this.rules.splice(index,1);
     },
-    changeRulesJson(){
-      let list = JSON.parse(this.rulesJson);
-      if (list){
-        this.rules = list;
-        this.$message.success("保存成功");
-      }
+
+    // 导出规则
+    exportRule(){
+      this.$prompt('请自行复制下面的JSON规则', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputValue: JSON.stringify(this.rules),
+        inputType: 'textarea'
+      })
+    },
+    // 导入规则
+    importRule(){
+      this.$prompt('导入规则', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputType: 'textarea',
+        inputPlaceholder: '请输入规则JSON'
+      }).then(({ value }) => {
+        let list = JSON.parse(value);
+        if (list){
+          this.rules = list;
+          this.$message.success("导入成功");
+        }else{
+          this.$message.error("导入失败");
+        }
+      })
     }
   }
 }

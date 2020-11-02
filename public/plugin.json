@@ -2,6 +2,7 @@
   "pluginName": "文件整理",
   "description": "文件整理",
   "author": "blowsnow",
+  "homepage": "https://github.com/utools-blowsnow/file_sort_out",
   "main": "index.html",
   "preload": "preload.js",
   "logo": "logo.png",
