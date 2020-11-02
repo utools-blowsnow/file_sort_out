@@ -5,6 +5,7 @@
 
 # TODO
 - [ ] 读取文件夹下的文件进行整理
+- [ ] 实时监听文件夹操作
 
 # 开源
 https://github.com/utools-blowsnow/file_sort_out
